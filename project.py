@@ -1,19 +1,18 @@
 #Using your laptop/desktop webcam, create a video that contains the background for the first few seconds followed by your entry in the video.
-'''
 import cv2
-a = cv2.VideoCapture(0)  # initiate Video Capture from our Webcam
+a = cv2.VideoCapture(0)  
 img_array = []
-while True:  # While video is being captured,
-    check, frame = a.read()  # we'll read the frames captured
+while True:  
+    check, frame = a.read()  
     
-    height, width, layers = frame.shape   # calculate the dimensions of the frames
+    height, width, layers = frame.shape  
     size = (width,height)
-    img_array.append(frame)  # append the frame to the image array we defined earlier
+    img_array.append(frame)  
  
  
-    out = cv2.VideoWriter('my_video.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)  # we'll then create a VideoWriter instance and set file name to project.avi
+    out = cv2.VideoWriter('my_video.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)  
     for i in range(len(img_array)):
-        out.write(img_array[i])   # We'll thn write out the frames stored in the image array
+        out.write(img_array[i])   
     
     
     cv2.imshow("Image",frame)
@@ -24,7 +23,7 @@ while True:  # While video is being captured,
 out.release()
 a.release()
 cv2.destroyAllWindows()
-'''
+
 import numpy as np
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
@@ -83,7 +82,7 @@ def Background_Substraction(img_dir,lmda,eta,m,n,alpha):
     initImage = os.path.join(img_dir,img_file_name[0]) 
     mean, variance = initBackground(initImage) 
     
-    for i in range(7,11): 
+    for i in range(1,19): 
         img_path = os.path.join(img_dir,img_file_name[i]) 
         fig,ax = plt.subplots(1,3,figsize=(10,10))
         rI = ForegroundDetection(img_path,mean,variance,lmda) 
@@ -124,12 +123,10 @@ def Background_Substraction(img_dir,lmda,eta,m,n,alpha):
         plt.show()
     return(mean,variance)
 # For eta = 0.7, lambda = 0.7
-#mean, variance = Background_Substraction("./AirStripVideo/Images",0.7,0.7,8,8,0.8)
+mean, variance = Background_Substraction("./AirStripVideo/Images",0.7,0.7,8,8,0.8)
 
 #For eta = 0.9, lambda = 0.7
-#mean, variance = Background_Substraction("./AirStripVideo/Images",0.7,0.9,8,8,0.8)
-# eta is the parameter for noise removal so we see from above middle image that eta = 0.9 is not a good parameter
+mean, variance = Background_Substraction("./AirStripVideo/Images",0.7,0.9,8,8,0.8)
 
 # For eta = 0.7, lambda = 0.9
 mean, variance = Background_Substraction("./AirStripVideo/Images",0.9,0.7,8,8,0.8)
-# lambda is used for foreground detection. we dont see any significant changes for lambda = 0.9
